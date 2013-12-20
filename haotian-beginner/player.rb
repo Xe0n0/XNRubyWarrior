@@ -1,29 +1,33 @@
 class Player
 
   def initialize()
-    @enemies = 4
     @last_action = :safe
+    @health = 20
   end
 
   def play_turn(warrior)
 
     if not warrior.feel.empty?
+
         warrior.attack!
         @last_action = :attack
+
     else
 
-      if @last_action == :attack
-        @enemies -= 1
-        @last_action = :safe
-      end
+      if @health > warrior.health
+        warrior.walk!
+      else
 
-      if warrior.health < 7 and @enemies > 0
-        warrior.rest!
-        return
-      end
+        if warrior.health <= 12
+          warrior.rest!
+        else
+          warrior.walk!
+        end
 
-      warrior.walk!
+      end
 
     end
+
+    @health = warrior.health
   end
 end
