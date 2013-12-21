@@ -3,6 +3,7 @@ class Player
   def initialize()
     @last_action = :safe
     @health = 20
+    @ene = 3
   end
 
   def play_turn(warrior)
@@ -14,16 +15,17 @@ class Player
 
     else
 
-      if @health > warrior.health
+      if @last_action == :attack
+
+        @last_action = :safe
+        @ene -= 1
+
+      end
+
+      if @health > warrior.health or @ene <= 0 or warrior.health > 12
         warrior.walk!
       else
-
-        if warrior.health <= 12
-          warrior.rest!
-        else
-          warrior.walk!
-        end
-
+        warrior.rest!
       end
 
     end
