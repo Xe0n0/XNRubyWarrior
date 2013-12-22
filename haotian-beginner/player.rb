@@ -9,9 +9,12 @@ class Player
   def play_turn(warrior)
 
     if not warrior.feel.empty?
-
-        warrior.attack!
-        @last_action = :attack
+        if warrior.feel.captive?
+          warrior.rescue!
+        else
+          warrior.attack!
+          @last_action = :attack
+        end
 
     else
 
