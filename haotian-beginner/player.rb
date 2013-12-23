@@ -4,15 +4,19 @@ class Player
     @last_action = :safe
     @health = 20
     @ene = 3
+    @direction = :forward
   end
 
   def play_turn(warrior)
+    if warrior.feel(@direction).wall?
+      @direction = :backward
+    end
 
-    if not warrior.feel.empty?
-        if warrior.feel.captive?
-          warrior.rescue!
+    if not warrior.feel(@direction).empty?
+        if warrior.feel(@direction).captive?
+          warrior.rescue!(@direction)
         else
-          warrior.attack!
+          warrior.attack!(@direction)
           @last_action = :attack
         end
 
@@ -25,8 +29,14 @@ class Player
 
       end
 
-      if @health > warrior.health or @ene <= 0 or warrior.health > 12
-        warrior.walk!
+      if @health > warrior.health and warrior.health < 14
+        if @direction == :forward
+          warrior.walk! :backward
+        else
+          warrior.walk! :forward
+        end
+      elsif  @ene <= 0 or warrior.health >= 20 or @health > warrior.health
+        warrior.walk!(@direction)
       else
         warrior.rest!
       end
