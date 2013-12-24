@@ -4,12 +4,12 @@ class Player
     @last_action = :safe
     @health = 20
     @ene = 3
-    @direction = :forward
+    @direction = :backward
   end
 
   def play_turn(warrior)
     if warrior.feel(@direction).wall?
-      @direction = :backward
+      @direction = :forward
     end
 
     if not warrior.feel(@direction).empty?
